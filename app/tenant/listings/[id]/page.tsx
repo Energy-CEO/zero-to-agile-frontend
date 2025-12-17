@@ -7,13 +7,26 @@ import { Card } from '@/components/common/Card';
 import { getListingById } from '@/lib/repositories/listingRepository';
 import { Listing } from '@/types/listing';
 
-export default function TenantListingDetailPage({ params }: { params: { id: string } }) {
+type PageProps = { params: Promise<{ id: string }> };
+
+export default function TenantListingDetailPage({ params }: PageProps) {
   const router = useRouter();
+  const [listingId, setListingId] = useState<string | null>(null);
   const [listing, setListing] = useState<Listing | null>(null);
 
   useEffect(() => {
-    getListingById(params.id).then(setListing);
-  }, [params.id]);
+    let active = true;
+    Promise.resolve(params).then(({ id }) => {
+      if (!active) return;
+      setListingId(id);
+      getListingById(id).then((data) => {
+        if (active) setListing(data);
+      });
+    });
+    return () => {
+      active = false;
+    };
+  }, [params]);
 
   if (!listing) {
     return (
