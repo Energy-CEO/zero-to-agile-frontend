@@ -74,7 +74,7 @@ jobs:
       - name: Health check
         run: |
           sleep 5
-          if curl -sSf http://localhost:37123/ > /dev/null; then
+          if curl -sSf http://localhost:80/ > /dev/null; then
             echo "agilebang-ui is UP"
           else
             echo "Health check failed"
