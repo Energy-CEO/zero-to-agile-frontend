@@ -65,7 +65,7 @@ jobs:
           REPO_USER: ${{ secrets.REPO_USER }}
           IMAGE_TAG: latest
         run: |
-          docker compose up -d
+          docker-compose up -d
 
       - name: Health check
         run: |
