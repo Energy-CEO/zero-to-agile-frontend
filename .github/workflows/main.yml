@@ -57,11 +57,7 @@ jobs:
 
       - name: Stop old container
         run: |
-          docker-compose down || true
-          docker stop agilebang-ui || true 
-          docker rm agilebang-ui || true
-          docker stop nginx || true
-          docker rm nginx || true
+          docker image prune -f
           docker logout
 
       - name: Run container
@@ -75,9 +71,9 @@ jobs:
         run: |
           sleep 5
           if curl -sSf http://localhost:80/ > /dev/null; then
-            echo "multi-agent-ui is UP"
+            echo "agilebang-ui is UP"
           else
             echo "Health check failed"
-            docker logs multi-agent-ui --tail 200
+            docker logs agilebang-ui --tail 200
             exit 1
           fi
